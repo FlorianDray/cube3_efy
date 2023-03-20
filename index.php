@@ -3,9 +3,7 @@ const HOST = 'localhost';
 const DB_NAME = 'sneak_me';
 const USERNAME = 'sylphe';
 const PWD = 'Sylphe0597!';
-if(!empty($_POST['getAllSneakers'])){
-    echo 'getAllSneakers';
-}
+
 function DBconnect(){
     try {
         $conn = new PDO("mysql:host=" . HOST . ";dbname=" . DB_NAME, USERNAME, PWD);
@@ -32,7 +30,9 @@ function makeQuery($query){
 function getAllSneakers(){
     $select = 's.id, s.size, s.price, s.img_path, c.name as color, b.name as brand';
     $from = 'sneakers s';
-    $join = ' INNER JOIN brand b ON s.id_brand = b.id AND colors c ON s.id_color = c.id';
-    $query = "SELECT $select FROM $from  $join";    
+    $join = 'brand b ON s.id_brand = b.id AND colors c ON s.id_color = c.id';
+    $query = "SELECT $select FROM $from INNER JOIN $join";
     echo  makeQuery($query);
 }
+
+getAllSneakers();

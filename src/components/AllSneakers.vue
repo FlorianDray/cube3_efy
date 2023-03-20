@@ -1,15 +1,16 @@
 <script setup>
 import callApi from '../APIManager'
-
 let params = {
-    functionName  : 'getAllSneakers()'
+    httpMethod: 'GET',
+    functionName: 'getAllSneakers()'
 }
-const allSneakers = callApi("GET", params)
 
+const allSneakers = callApi()
+console.log(allSneakers )
 </script>
 
 <template>
-    <h2>Je suis rentré dans allSneakers</h2>
+    <h2>Je suis rentré dans AllSneakers</h2>
     <div v-if="sneakers && sneakers.length > 0">
         <ul>
             <li v-for="sneakers in allSneakers" :key="sneakers.id">

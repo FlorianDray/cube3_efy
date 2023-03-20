@@ -1,22 +1,9 @@
-const callApi = (httpMethod, params) => {
-  let url = '"http://localhost:5173/index.php'
-
-  fetch(url, {
-    method: httpMethod,
-    // headers: {
-    //   'Content-Type': 'multipart/form-data'
-    // },
-    body: JSON.stringify(params),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success:", data)
-      return data
-    })
-    .catch((error) => {
-      console.log(error)
-      return false
-    });
+const callApi = () => {
+    let url ='http://localhost:80/cube3_efy/index.php';
+    // let url = 'http://localhost:80/index.php'
+    fetch(url)
+        .then(response => response)
+        .then(data => console.log(data))
+        .catch(error => console.error(error))
 }
-
 export default callApi
