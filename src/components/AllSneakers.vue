@@ -1,9 +1,9 @@
 <template>
     <h2>Je suis rentré dans AllSneakers</h2>
-    <div v-if="!sneakers || allSneakers.length > 0">
+    <div v-if="sneakers && allSneakers.length > 0">
         <ul>
             <li v-for="sneakers in allSneakers" :key="sneakers.id">
-                {{ sneakers.name }} - {{ sneakers.brand }} - {{ sneakers.price }}
+                {{ sneakers }} - {{ sneakers }} - {{ sneakers }}
             </li>
         </ul>
     </div>
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { onMounted } from 'vue'
 import callApi from '../APIManager'
 
 export default {
@@ -23,9 +24,22 @@ export default {
         }
     },
     async created() {
-        const response = callApi()
-        const { data: allSneakers } = await response.json()
-        this.allSneakers = allSneakers
+        let url = 'http://localhost:80/cube3_efy/index.php'
+        const response = await fetch(url);
+        const data = await response.json().then(
+            // this.allSneakers = this,
+            // console.log(1),
+            // console.log(this.data),
+            // allSneakers = this.data,
+            // console.log(this.allSneakers)
+        )
+        console.log(2)
+        console.log(data)
+        console.log(this.allSneakers)
+        console.log(3)
+        this.allSneakers = data
+        console.log(data)
+        console.log(this.allSneakers)
     }
 }
 </script>

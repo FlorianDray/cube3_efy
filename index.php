@@ -16,10 +16,9 @@ function DBconnect(){
 
 function makeQuery($query){
     $conn = DBconnect();
-    // $temp = $conn->prepare($query);
     $temp = $conn->prepare('SELECT * FROM sneakers');
     $temp->execute();
-    $items = $temp->fetchAll();
+    $items = $temp->fetchAll(PDO::FETCH_CLASS);
     if(!isset($items) || empty($items)) {
         return json_encode(false);
     }
@@ -29,10 +28,11 @@ function makeQuery($query){
 }
 
 function getAllSneakers(){
-    $select = 's.id, s.size, s.price, s.img_path, c.name as color, b.name as brand';
+    $select = 's.id AS id,  s.size AS size, s.price AS price, s.img_path AS price, c.name AS color, b.name AS brand';
     $from = 'sneakers s';
-    $join = 'brand b ON s.id_brand = b.id AND colors c ON s.id_color = c.id';
-    $query = "SELECT $select FROM $from INNER JOIN $join";
+    $join = 'INNER JOIN brands b ON s.id_brand = b.id AND colors c ON s.id_color = c.id';
+    $orderBY = 's.id DESC';
+    $query = "SELECT DISTINCT $select FROM $from $join ORDER BY $orderBY";
     echo  makeQuery($query);
 }
 
