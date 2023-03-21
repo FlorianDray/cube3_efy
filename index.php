@@ -1,8 +1,5 @@
 <?php
-const HOST = 'localhost';
-const DB_NAME = 'sneak_me';
-const USERNAME = 'sylphe';
-const PWD = 'Sylphe0597!';
+require './env.php';
 
 function DBconnect(){
     try {
@@ -35,10 +32,11 @@ function getAllSneakers(){
     $query = "SELECT DISTINCT $select FROM $from $join ORDER BY $orderBY";
     echo  makeQuery($query);
 }
+if($_SERVER["REQUEST_METHOD"] === "GET"){
+    getAllSneakers();
+}
 
-
-
-echo getAllSneakers();
+// echo getAllSneakers();
 
 
 

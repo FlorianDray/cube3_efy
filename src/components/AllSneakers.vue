@@ -1,9 +1,9 @@
 <template>
     <h2>Je suis rentré dans AllSneakers</h2>
-    <div v-if="sneakers && allSneakers.length > 0">
+    <div v-if="allSneakers.length > 0">
         <ul>
             <li v-for="sneakers in allSneakers" :key="sneakers.id">
-                {{ sneakers }} - {{ sneakers }} - {{ sneakers }}
+                {{ sneakers.id }}
             </li>
         </ul>
     </div>
@@ -14,32 +14,24 @@
 
 <script>
 import { onMounted } from 'vue'
-import callApi from '../APIManager'
+// import callApi from '../APIManager'
+import ManagerAPI from '../ManagerAPI'
 
 export default {
     name: 'AllSneakers',
     data() {
         return {
-            allSneakers: false
+            allSneakers: []
         }
     },
     async created() {
-        let url = 'http://localhost:80/cube3_efy/index.php'
-        const response = await fetch(url);
-        const data = await response.json().then(
-            // this.allSneakers = this,
-            // console.log(1),
-            // console.log(this.data),
-            // allSneakers = this.data,
-            // console.log(this.allSneakers)
-        )
-        console.log(2)
-        console.log(data)
-        console.log(this.allSneakers)
-        console.log(3)
-        this.allSneakers = data
-        console.log(data)
-        console.log(this.allSneakers)
+        // this.allSneakers = await callApi()
+        let ManagerAPI = new ManagerAPI()
+        let params = [
+            ['name' = id, 'value' = 2]
+        ]
+
+        this.allSneakers = ManagerAPI.getAPI('getAllSneakers', params)
     }
 }
 </script>
