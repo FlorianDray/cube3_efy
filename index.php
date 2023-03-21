@@ -16,14 +16,15 @@ function DBconnect(){
 
 function makeQuery($query){
     $conn = DBconnect();
-    $temp = $conn->prepare($query);
+    // $temp = $conn->prepare($query);
+    $temp = $conn->prepare('SELECT * FROM sneakers');
     $temp->execute();
-    $users = $temp->fetchAll();
-    if(!isset($users) || empty($users)) {
+    $items = $temp->fetchAll();
+    if(!isset($items) || empty($items)) {
         return json_encode(false);
     }
     else {
-        return json_encode($users);
+        return json_encode($items);
     }
 }
 
@@ -35,4 +36,9 @@ function getAllSneakers(){
     echo  makeQuery($query);
 }
 
-getAllSneakers();
+
+
+echo getAllSneakers();
+
+
+
