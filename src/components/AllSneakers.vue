@@ -28,7 +28,7 @@ export default {
         // this.allSneakers = await callApi()
         let ManagerAPI = new ManagerAPI()
         let params = [
-            ['name' = id, 'value' = 2]
+            // ['name' = id, 'value' = 2]
         ]
 
         this.allSneakers = ManagerAPI.getAPI('getAllSneakers', params)
