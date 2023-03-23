@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import { onMounted } from 'vue'
-// import callApi from '../APIManager'
 import ManagerAPI from '../ManagerAPI'
 
 export default {
@@ -25,13 +23,11 @@ export default {
         }
     },
     async created() {
-        // this.allSneakers = await callApi()
-        let ManagerAPI = new ManagerAPI()
+        let MANAGER = new ManagerAPI()
         let params = [
-            // ['name' = id, 'value' = 2]
+            {name : 'id_sneakers', value : 2}
         ]
-
-        this.allSneakers = ManagerAPI.getAPI('getAllSneakers', params)
+        this.allSneakers = MANAGER.getAPI('getOneSneakers', params)
     }
 }
 </script>
