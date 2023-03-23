@@ -15,7 +15,6 @@ export default class ManagerAPI {
     }
     const response = await fetch(url) //Fetch sur le fichier index.php
     const data = await response.json() // Réception de la réponse
-    console.log(data)
     return data //Renvoi de la réponse
   }
 
