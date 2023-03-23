@@ -1,22 +1,34 @@
 <?php
 require './env.php';
 
+// Réception d'une requête HTTP
+if (isset($_REQUEST['functionName'])) {
+    $functionName = $_REQUEST['functionName'];
+    if (function_exists($functionName)) {//Vérification de l'existence de la fonction
+        $functionName();//Lancement de la fonction
+    } else {
+        echo json_encode('La fonction n\'existe pas :' . $functionName );
+    }
+}
+
+//Connexion à la BDD
 function DBconnect(){
-    try {
+    try { //Essaie de connexion
         $conn = new PDO("mysql:host=" . HOST . ";dbname=" . DB_NAME, USERNAME, PWD);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $conn;
-    } catch (PDOException $e) {
+    } catch (PDOException $e) { //Sinon retour d'erreur
         echo "Connection Error: " . $e->getMessage();
     }
 }
 
+//Execution de requêtes
 function makeQuery($query){
-    $conn = DBconnect();
-    $temp = $conn->prepare($query);
-    $temp->execute();
-    $items = $temp->fetchAll(PDO::FETCH_CLASS);
-    if(!isset($items) || empty($items)) {
+    $conn = DBconnect(); //Création de la connection
+    $temp = $conn->prepare($query); //Préparation de la requête
+    $temp->execute();//Exécution de la requête
+    $items = $temp->fetchAll(PDO::FETCH_CLASS); //Récupération des résultats
+    if(!isset($items) || empty($items)) { //Retour en fonction de ce que renvoi la requête
         return json_encode(false);
     }
     else {
@@ -24,58 +36,27 @@ function makeQuery($query){
     }
 }
 
+//Récupération de toutes les sneakers
 function getAllSneakers(){
-    $select = 's.id AS id,  s.size AS size, s.price AS price, s.img_path AS price, c.name AS color, b.name AS brand';
+    //Création de la requête
+    $select = 's.id AS id,  s.size AS size, s.price AS price, s.img_path AS img_path, c.name AS color, b.name AS brand';
     $from = 'sneakers s';
     $join = 'INNER JOIN brands b ON s.id_brand = b.id INNER JOIN colors c ON s.id_color = c.id';
     $orderBY = 's.id DESC';
     $query = "SELECT $select FROM $from $join ORDER BY $orderBY;";
-    echo  makeQuery($query);
+    echo  makeQuery($query); //Execution de la requête
 }
 
-function getOneSneakers($id){
-    $select = 's.id AS id,  s.size AS size, s.price AS price, s.img_path AS price, c.name AS color, b.name AS brand ';
+//Récupération de toutes les sneakers en fonctions d'un id
+function getOneSneakers(){
+    //Création de la requête
+    $id = $_REQUEST['id_sneakers'];
+    $select = 's.id AS id,  s.size AS size, s.price AS price, s.img_path AS img_path, c.name AS color, b.name AS brand ';
     $from = ' sneakers s ';
     $join = ' INNER JOIN brands b ON s.id_brand = b.id INNER JOIN colors c ON s.id_color = c.id ';
     $where = " s.id = $id ";
     $query = "SELECT $select FROM $from $join WHERE $where;";
-    echo  makeQuery($query);
+    echo  makeQuery($query);  //Execution de la requête
 }
-http://localhost:80/cube3_efy/index.php?functionName=getOneSneakers&id_sneakers=2
-if (isset($_REQUEST['functionName'])) {
-    // var_dump($_REQUEST);
-    // var_dump($_REQUEST['functionName']);
-    // echo '<pre>';
-    // var_dump($_SERVER);
-    // echo '</pre>';echo '<pre>';
-    // var_dump($_SERVER);
-    // echo '</pre>';
-    $functionName = $_REQUEST['functionName'];
-    var_dump($functionName);
-    echo json_encode($_REQUEST['id_sneakers']);
-    if (function_exists($functionName)) {
-        // echo json_encode($_REQUEST['id_sneakers']);
-        switch ($functionName) {
-            // getOneSneakers
-            case 'getAllSneakers':
-                getAllSneakers();
-            case 'getOneSneakers':
-                $id_sneakers = $_REQUEST['id_sneakers'];
-                if($id_sneakers && $id_sneakers) {
-                    echo json_encode($id_sneakers);
-                    getOneSneakers($_REQUEST['id_sneakers']);
-                } else {
-                    echo json_encode('Paramètre id_sneakers invalide');
-                }
-            default:
-                echo json_encode('Fonction non prise en charge');
-        }
-    } else {
-        echo json_encode('La fonction n\'existe pas :' . $functionName );
-    }
-}
-// echo getOneSneakers(2);
-// if(isset($_POST) || isset($_GET)){
-//     $varHttp = $_REQUEST['method'];
-// }
-// echo getOneSneakers(2);
+
+

@@ -1,3 +1,39 @@
 body {
     margin: 0;
+    background-color: #f8f8f8;
+}
+
+.section_allSneakers {
+    display: flex;
+    height: 320px;
+    margin: 30px auto 30px;
+    border-radius: 10px;
+    align-items: center;
+    box-shadow: 1px 1px 1px 1px #a8a4a3; 
+}
+
+.card_sneakers {
+    margin-left: 30px;
+    width: 300px;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 1px 1px 1px 1px #a8a4a3; 
+}
+
+.card_sneakers_namePrice{
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;    
+    margin: auto;
+    width: 280px;
+    justify-content:space-between;
+    align-items: center;
+}
+
+.img_card_sneakers{
+    width: 240px;
+    height: 220px;
 }

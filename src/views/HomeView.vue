@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import AllSneakers from '../components/AllSneakers.vue';
+import AllSneakers from '../components/AllSneakersComponent.vue';
   export default {
     name: 'HomeView',
     components:{   

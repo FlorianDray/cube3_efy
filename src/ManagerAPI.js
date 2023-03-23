@@ -1,16 +1,41 @@
 export default class ManagerAPI {
-    baseURL = 'http://localhost:80/cube3_efy/index.php'
 
-    async getAPI(functionName, params) {
-        let url = this.baseURL + '?functionName=' + functionName
-        if(params.length > 0){
-            params.map(element=> url += '&' + element.name + '=' + element.value)
-        }
-        console.log(url)
-        const response = await fetch(url)
-        console.log(response)
-        const data = await response.json()
-        console.log(data)
-        return data
+  baseURL = 'http://localhost:80/cube3_efy/index.php'
+
+  /**
+   * Appel API en méthode HTTP GET
+   * @param {string} functionName Nom de la fonction visé dans index.php
+   * @param {array} params Paramètre de requête - Chaque param nécessite un objet clé + valeur
+   * @returns  {array} Retour API
+   */
+  async getAPI(functionName, params = '') {
+    let url = this.baseURL + '?functionName=' + functionName //Construction minimal d'une url
+    if (params.length > 0) { //Ajout des paramètres dans l'url
+      params.map(element => url += '&' + element.name + '=' + element.value)
     }
+    const response = await fetch(url) //Fetch sur le fichier index.php
+    const data = await response.json() // Réception de la réponse
+    console.log(data)
+    return data //Renvoi de la réponse
+  }
+
+  /**
+   * Appel API en méthode HTTP POST
+   * @param {string} functionName Nom de la fonction visé dans index.php
+   * @param {array} params Paramètre de requête - Chaque param nécessite un objet clé + valeur
+   * @returns  {array} Retour API
+   */
+  async postAPI(functionName, params = '') {
+    let url = this.baseURL + '?functionName=' + functionName //Construction minimal d'une url
+    //Fetch sur le fichier index.php
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+    const data = await response.json() // Réception de la réponse
+    return data //Renvoi de la réponse
+  }
 }
