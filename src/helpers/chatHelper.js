@@ -1,135 +1,33 @@
+import chaussures from '../fakeData.js';
 
-/** On importe l'objet chaussure et les données qu'il contient dans le fichier fakeData */
-import chaussures from '../fakeData.js'
+export function getTime() {
+  let today = new Date();
+  let hours = today.getHours();
+  let minutes = today.getMinutes();
 
-/**
- * Reçoit le message utilisateur et actualise la liste dialog avec la demande et la réponse
- * @param {string} input  message utilisateur
- * @param {array[Object]} dialog   liste des messages
- * @returns {array[Object]} dialog liste des messages
- */
-export function converse(input, dialog) {
-    if(!input) {
-        dialog.push({
-            msg: input,
-            user: 'user'
-        })
-        dialog.push({
-            msg: 'je n\'ai pas compris',
-            user: 'bot'
-        })
-    } else {
-        if (selection.length < 1 ){
-            selection = []
-        }
-        dialog.push({
-            msg: input,
-            user: 'user'
-        })
-        dialog.push({
-            msg: chooseResponse(input , selection),
-            user: 'bot'
-        })
-    }
-    return dialog
+  if (hours < 10) {
+    hours = '0' + hours;
+  }
+
+  if (minutes < 10) {
+    minutes = '0' + minutes;
+  }
+
+  let time = hours + ':' + minutes;
+  return time;
 }
 
-/**
- * Choisis une réponse adapté
- * @param {string} input  message utilisateur
- * @returns message du bot
- */
-    export function chooseResponse(input , selection ) {
-    switch (input) {
-        case 'Homme':
-            return getCategories('marque')
-        case 'Femme':
-            return getCategories('type')
-        case 'nom':
-            return getCategories('nom')
-        case 'couleur':
-            return getCategories('couleurs')
-        case 'taille':
-            return getCategories('taille')
-        case 'nike':
-            return getProducts('nike', 'marque')
-    }
+export function getCategories(category) {
+  const arrayOut = [...new Set(chaussures.map((c) => c[category]))];
+  return arrayOut.join(', ');
 }
 
-/**
- * Retourne la liste des éléments d'une catégorie
- * @param {string} category
- * @returns {array} message du bot
- */
-    export function getCategories(category){
-    // let arrayOut = []
-    console.log(chaussures)
-    const arrayOut = [... new Set(chaussures.map(c => c[category]))];
-
-    // if (chaussures.length > 0){
-    //     chaussures.forEach(element => {
-    //         if(!arrayOut.includes(element[category])  ){
-    //             arrayOut.push(element[category])
-    //         }
-    //     })
-    // } else {
-    //     console.log('Aucune chaussure disponible')
-    //     return 'Aucune chaussure disponible'
-    // }
-    //
-    if (arrayOut.length > 0){
-        console.log(arrayOut)
-        //return arrayOut;
-        return arrayOut.join(", ");
-    } else{
-        console.log('Aucun élément ne correspond à la recherche ' + category)
-        return 'Aucun élément ne correspond à la recherche ' + category
+export function getProducts(input, category) {
+  let arrayOut = [];
+  chaussures.forEach((element) => {
+    if (element[category] === input) {
+      arrayOut.push(element);
     }
-}
-
-/**
- *
- * @param @param {string} input  message utilisateur
- * @param {*String} category
- * @param {*String} value
- * @returns
- */
-    export function getProducts(input, category){
-    // DV : l'utilisation d'un new Set comme ci-dessus est plutôt recommandée.
-    let arrayOut = [];
-    console.log(category)
-    if (chaussures.length > 0){
-        chaussures.forEach(element => {
-            if(element[category] === input){
-                arrayOut.push(element)
-            }
-        })
-    } else {
-        console.log('Aucune chaussure disponible')
-        return 'Aucune chaussure disponible'
-    }
-    if (arrayOut.length > 0){
-        console.log(arrayOut)
-        // DV : on pourrait ici exploiter les images des produits...
-        return `Nous avons ${arrayOut.length} produits correspondant à cette demande : ${arrayOut.map(c => c.nom).join(", ")}.`;
-    } else{
-        console.log('Aucun élément ne correspond à la recherche ' + category + ': ' + input)
-        return 'Aucun élément ne correspond à la recherche ' + category + ': ' + input
-    }
-}
-    export function getTime() {
-        let today = new Date();
-        hours = today.getHours();
-        minutes = today.getMinutes();
-
-        if (hours < 10) {
-        hours = "0" + hours;
-        }
-
-        if (minutes < 10) {
-        minutes = "0" + minutes;
-        }
-
-        let time = hours + ":" + minutes;
-        return time;
+  });
+  return `Nous avons ${arrayOut.length} produits correspondant à cette demande : ${arrayOut.map((c) => c.nom).join(', ')}.`;
 }

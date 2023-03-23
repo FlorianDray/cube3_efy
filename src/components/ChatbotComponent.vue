@@ -1,74 +1,109 @@
 <script>
 
-/** On importe des fonctions du fichier chatHelper pour pouvoir les utiliser dans le script */
-import { converse, getTime, } from '../helpers/chatHelper';
-/** On créer un objet ChatbotComponent pour exporter le composant avec ses données */
+// Importer les fonctions nécessaires à partir du module chatHelper
+import { getTime, getCategories, getProducts, } from '../helpers/chatHelper';
+// Créer et exporter un composant Vue.js nommé ChatbotComponentv2 pour récupérer ses données.
 export default {
   name: 'ChatbotComponent',
   props: {
     msg: String
   },
+  // Initialiser les données de dialogue avec un message de bienvenue du bot
   data() {
     return {
       dialog: [{
         msg: 'Bonjour ! Que puis-je faire pour vous ?',
         user: 'bot',
-        time: ""
+        time: '',
+        
       }],
-      inputUserU: "Bonjour",
-      inputUser1: "Homme",
-      inputUser2: "Femme",
+      userMessage: "", // Ajouter une nouvelle propriété pour stocker le message de l'utilisateur
+      isChatbotOpen: false, // État pour afficher ou masquer le chatbot
+
     }
   },
+
   methods: {
-    dialogUndefined() {
-      this.dialog = converse(this.inputUserU, this.dialog)
+    // Méthode pour basculer l'état d'affichage du chatbot
+    toggleChatbot() {
+      this.isChatbotOpen = !this.isChatbotOpen;
     },
-    dialogHomme() {
-      this.dialog = converse(this.inputUser1, this.dialog)
-    },
-    dialogFemme() {
-      this.dialog = converse(this.inputUser2, this.dialog)
+    // Méthode pour envoyer le message de l'utilisateur et mettre à jour le dialogue
+    sendMessage() {
+      if (this.userMessage.trim()) {
+      this.addMessage(this.userMessage, 'user');
+      const botReply = this.botResponse(this.userMessage, this.dialog);
+      this.addMessage(botReply, 'bot');
+      this.userMessage = '';
+      this.scrollToBottom();
     }
-}
+  },
+    // Méthode pour ajouter un message dans la boite de dialogue
+    addMessage(message, user) {
+    this.dialog.push({
+      msg: message,
+      user: user,
+      time: getTime(),
+    });
+  },
+    // Personnalisez les réponses du chatbot ici
+    botResponse(userMessage,) {
+      switch (userMessage.toLowerCase()) {
+        case 'bonjour':
+          return ("Bonjour et bienvenue !");
+        case 'homme':
+          return getCategories('type');
+        case 'femme':
+          return getCategories('type');
+        case 'nom':
+          return getCategories('nom');
+        case 'couleur':
+          return getCategories('couleurs');
+        case 'taille':
+          return getCategories('taille');
+        case 'nike':
+          return getProducts('nike', 'marque');
+        default:
+          return "Je n'ai pas compris. Veuillez réessayer.";
+      }
+    },
+    // Fonction qui permet de défiler vers le bas automatiquement la boite de dialogue
+    scrollToBottom() {
+      this.$nextTick(() => {
+        this.$refs.scrollArea.scrollTop = this.$refs.scrollArea.scrollHeight;
+      });
+    },
+  }
 }
 </script>
 
-
-    <!-- Structure html du chatbot -->
 <template>
-  <h1>Bonjour c'est le ChatbotComponent</h1>
- <div class="page-chatbot">
-    <h1>{{ msg }}</h1>
-    <div class="chatbot-boxplus">
-    <div class="chatbot-box">
-      <div id="button-chatbox">
-        <button type="button" class="button-open-chatbox"> <img class="chat-bar-icons-2"
-            src="../assets/images/bot_logo.png">
-          <p id="bot-text">Chat avec Sneak Me !</p>
-        </button>
 
+    <!-- Le conteneur du chatbot, qui sera affiché ou masqué en fonction de l'état isChatbotOpen -->
+ <div class="page-chatbot" :class="{ 'is-closed': !isChatbotOpen }">
+    <!-- Le bouton pour afficher ou masquer le chatbot -->
+    <div class="chatbot-boxplus">
+    <div class="chatbot-box" :class="{ 'is-open': isChatbotOpen }">
+      <div id="button-chatbox">
+        <button type="button" class="button-toggle-chatbox" @click="toggleChatbot()">
+          <img class="chat-bar-icons-2" src="../assets/images/bot_logo.png">
+          <p id="bot-text" v-if="!isChatbotOpen">Chat avec Sneak Me !</p>
+          <p id="bot-text" v-if="isChatbotOpen">Fermer</p>
+        </button>
       </div>
-      <div class="window-chatbot">
-        <ul class="scrollbar">
+    <!-- La fenêtre du chatbot -->
+      <div class="window-chatbot" v-if="isChatbotOpen">
+    <!-- Afficher la liste des messages de dialogue -->
+        <ul class="scrollbar" ref="scrollArea">
           <li v-for="message in dialog">
             <div class="userBox">
-              <p :class="message.user == 'bot' ? 'bot' : 'user'">{{ message.msg }}<p id="time">12:34</p></p>
+              <p :class="message.user == 'bot' ? 'bot' : 'user'">{{ message.msg }}<p id="time">{{ message.time }}</p></p>
             </div>
           </li>
         </ul>
-        <div class="button-zone">
-          <button @click="dialogUndefined()" class="userButton">Voir le catalogue</button>
-          <button @click="dialogUndefined()" class="userButton">FAQ</button>
-          <button @click="dialogUndefined()" class="userButton">Connexion</button>
-          <button @click="dialogUndefined()" class="userButton">Inscription</button>
-          
-          <!-- <button @click="dialogHomme()" class="userButton">Homme</button>
-          <button @click="dialogFemme()" class="userButton">Femme</button>
-          <button @click="dialogUndefined()" class="userButton">Basket Basses</button>
-          <button @click="dialogUndefined()" class="userButton">Basket Hautes</button>
-          <button @click="dialogUndefined()" class="userButton">Choisir une couleur</button>
-          <button @click="dialogUndefined()" class="userButton">Ne pas choisir de couleur </button>  -->
+        <div class="input-zone">
+          <input type="text" v-model="userMessage" @keyup.enter="sendMessage" />
+          <button @click="sendMessage" class="sendButton">Envoyer</button>
         </div>
       </div>
     </div>
@@ -79,54 +114,90 @@ export default {
 
        <!-- <!- CSS du chatbot --->  
  <style>
+
 .chatbot-boxplus {
-  position: absolute;
-  right: 50px;
+  position: fixed;
+  right: 0px;
   bottom: 0px;
+  z-index: 1000; /* ajoutez cette propriété pour garantir que le chatbot apparaîtra au-dessus des autres éléments */
 }
 .chatbot-box {
-  position: relative;
-  animation: chatbot-window 0.1s 1 linear alternate running;
+  overflow: hidden;
+  transition: height 0.3s ease;
+  height: 100;
 }
+
+.chatbot-box.is-open {
+  height: calc(100vh - 80px); /* ajustez cette valeur en fonction de la hauteur souhaitée */
+}
+
+.page-chatbot {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  width: 100%;
+  max-width: 400px;
+  /* transition: transform 0.3s ease; */
+}
+
+.page-chatbot.is-closed {
+  transform: translateY(100%);
+}
+
 /* ------BOUTON D'OUVERTURE------ */
-.button-open-chatbox {
+
+.button-toggle-chatbox {
   position: relative;
   background: linear-gradient(90deg, rgba(35,95,255,1) 0%, rgba(45,161,245,1) 100%);
-  width: 550px;
-  height: 60px;
+  width: 110px;
+  height: 110px;
   bottom: 0;
   right: 0;
   cursor: pointer;
-  border-radius: 20px 20px 0px 0px;
+  border-radius: 50%;
   border: 3px solid white;
   border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
 }
+
 #bot-text {
-  text-align: left;
-  vertical-align: middle;
-  padding: 15px;
-  margin: 0;
-  color: white;
-  font-size: 18px;
+  font-size: 12px; /* ajustez la taille du texte si nécessaire */
+  font-weight: bold;
+  color: white; /* changez la couleur du texte pour qu'il soit visible sur le bouton */
+  margin-top: -30px; /* ajustez la marge supérieure pour positionner correctement le texte */
+  padding: 5px;
 }
-.button-open-chatbox img {
+.button-toggle-chatbox img {
   justify-content: space-evenly;
   box-sizing: border-box;
-  width: 50px;
-  float: left;
+  width: 90px; /* modifiez la taille de l'image */
+  float: none; /* supprimez cette propriété pour centrer l'image */
+  transition: transform 0.3s ease;
+
 }
+.button-toggle-chatbox:hover img {
+  transform: scale(1.1);
+}
+
+
 /* ------ZONE DES MESSAGES------ */
 .window-chatbot {
   background-color: white;
-  max-height: 700px;
-  width: 550px;
-  height: 700px;
+  max-height: 600px;
+  width: 500px;
+  height: 600px;
   position: relative;
   display: flex;
   flex-direction: column;
   bottom: 0px;
   right: 0px;
   scroll-behavior: smooth;
+  transition: height 0.3s ease-out;
+  border-radius: 15px;
 }
 .scrollbar {
   overflow: auto;
@@ -141,34 +212,43 @@ export default {
   padding:0;
   margin: 0;
 }
-/* ------ZONE DES BOUTONS------ */
-.button-zone {
-  height:auto;
+/* ------ZONE DE SAISIE DE TEXTE------ */
+.input-zone {
+  display: flex;
   background-color: #e7e7e7;
-  padding-bottom: 15px;
+  padding: 10px 15px;
   border-left: 3px solid white;
   border-right: 3px solid white;
 }
-.userButton {   
-  width: 240px;  
-  box-shadow:inset 0px 1px 0px 0px #bbdaf7;     
-  background:linear-gradient(90deg, rgba(35,95,255,1) 0%, rgba(45,161,245,1) 100%);          
-  border-radius:6px;     
-  border:1px solid #84bbf3;     
-  cursor:pointer;     
-  color:#ffffff;         
-  font-size:15px;     
-  font-weight:bold;     
-  padding:20px 0 20px 0;
-  margin: 15px 15px 0 15px;
-} 
-  
-.userButton:hover {   
-  background: linear-gradient(90deg, rgb(25, 69, 190) 0%, rgb(33, 118, 179) 100%);  
-} 
-.userButton:active {     
-  position:relative;     
-  top:1px; 
+
+.input-zone input[type="text"] {
+  flex-grow: 1;
+  border: 1px solid #84bbf3;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+  margin-right: 10px;
+}
+
+.sendButton {
+  background: linear-gradient(90deg, rgba(35,95,255,1) 0%, rgba(45,161,245,1) 100%);
+  border: 1px solid #84bbf3;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.sendButton:hover {
+  background: linear-gradient(90deg, rgb(25, 69, 190) 0%, rgb(33, 118, 179) 100%);
+}
+
+.sendButton:active {
+  position: relative;
+  top: 1px;
 }
 /* ------MESSAGES USER/BOT------ */
 .user {
@@ -206,6 +286,7 @@ export default {
   margin: 10px 0px 0px 0px;
 }
 /* ------ANIMATIONS------ */
+
 @keyframes chatbot-window {
   0% { top: 700px; }
   90% { top : 700px; }
@@ -221,5 +302,4 @@ export default {
         opacity: 1;
     }
 }
-
 </style>
