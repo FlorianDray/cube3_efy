@@ -47,7 +47,7 @@ function getAllSneakers(){
     echo  makeQuery($query); //Execution de la requête
 }
 
-//Récupération de toutes les sneakers en fonctions d'un id
+//Récupération de toutes les sneakers en fonction d'un id
 function getOneSneakers(){
     //Création de la requête
     $id = $_REQUEST['id_sneakers'];
@@ -59,4 +59,43 @@ function getOneSneakers(){
     echo  makeQuery($query);  //Execution de la requête
 }
 
+//Récupération d'un panier utilisateur en fonction d'un id
+function getUserCarts(){
+    //Création de la requête
+    $id_user = $_REQUEST['id_user'];
+    $from = ' carts ';
+    $where = " id_user = $id_user";
+    $query = "SELECT DISTINCT * FROM $from WHERE $where;";
+    echo  makeQuery($query);  //Execution de la requête
+}
 
+//Création d'une association produit/panier utilisateur
+function addToCart(){
+    $id_product = $_REQUEST['id_product'];
+    $id_user = $_REQUEST['id_user'];
+    $quantity = $_REQUEST['id_user'];
+    $table = 'carts';
+    $query = "INSERT INTO $table VALUES($id_user, $id_product, $quantity)";
+    echo  makeQuery($query);  //Execution de la requête
+} 
+
+//Suppression d'une association produit/panier utilisateur
+function deleteFromCart(){
+    $id_product = $_REQUEST['id_product'];
+    $id_user = $_REQUEST['id_user'];
+    $table = 'carts c';
+    $where = "c.id_user = $id_user AND c.id_sneaker = $id_product";
+    $query = "DELETE FROM $table WHERE $where;";
+    echo  makeQuery($query);  //Execution de la requête
+}
+
+//Modifications d'une association produit/panier utilisateur
+function updateFromCart(){
+    $id_product = $_REQUEST['id_product'];
+    $id_user = $_REQUEST['id_user'];
+    $quantity = $_REQUEST['quantity'];
+    $table = 'carts c';
+    $where = "c.id_user = $id_user AND c.id_sneaker = $id_product";
+    $query = "UPDATE $table SET quantity = $quantity  WHERE $where;";
+    echo  makeQuery($query);  //Execution de la requête
+}

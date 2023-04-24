@@ -18,12 +18,13 @@ CREATE TABLE sneak_me.brands (
 );
 CREATE TABLE sneak_me.sneakers (
 	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	name VARCHAR(255) NOT NULL,
 	size FLOAT NOT NULL,
 	price FLOAT NOT NULL,
 	img_path VARCHAR(255) NOT NULL,
 	id_color INT NOT NULL,
 	id_brand INT NOT NULL,
-	CONSTRAINT fkSneakers_colors FOREIGN KEY (id_color) REFERENCES colors(id),
+	quantity INT NOT NULL,
 	CONSTRAINT fkSneakers_brands FOREIGN KEY (id_brand) REFERENCES brands(id)
 );
 CREATE TABLE sneak_me.carts (
@@ -43,6 +44,7 @@ CREATE TABLE sneak_me.orders (
 	order_date DATE NOT NULL,
 	id_status INT NOT NULL,
 	id_user INT NOT NULL,
+	price FLOAT NOT NULL,
 	CONSTRAINT fkOrders_status FOREIGN KEY (id_status) REFERENCES status(id),
 	CONSTRAINT fkOrders_users FOREIGN KEY (id_user) REFERENCES users(id)
 );
