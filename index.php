@@ -104,3 +104,30 @@ function updateFromCart(){
     $query = "UPDATE $table SET quantity = $quantity  WHERE $where;";
     echo  makeQuery($query);  //Execution de la requête
 }
+
+//Création d'un utilisateur
+function addUser(){
+    $last_name = $_REQUEST['last_name'];
+    $first_name = $_REQUEST['first_name'];
+    $mail = $_REQUEST['mail'];
+    $adress = $_REQUEST['adress'];
+    $table = 'users';
+    $query = "INSERT INTO $table (last_name, first_name, mail, password, rule, adress) VALUES( '$last_name', '$first_name', '$mail','" . password_hash($password, PASSWORD_DEFAULT) . "', 0,  '$adress');";
+    echo  makeQuery($query);  //Execution de la requête
+}
+
+function connectUser()
+    {
+        $mail = $_REQUEST['mail'];
+        $query = "SELECT * FROM users WHERE email = $mail";
+        $user = json_decode(makeQuery($query)) ;
+        if (!$user) { // si y'a pas de data on retourne false
+            return false;
+        }
+        if (password_verify($this->pwd, $user['password'])) {// on utilise la fonction php password_verify pour checker le mdp côté form + bdd
+            return true;
+        } else {
+            return false;
+        }
+        // dans tous les cas on retourne true ou false pour la connexion
+    }

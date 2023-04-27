@@ -5,7 +5,7 @@ CREATE TABLE sneak_me.users (
 	first_name VARCHAR(255) NOT NULL,
 	mail VARCHAR(255) NOT NULL,
 	password VARCHAR(255) NOT NULL,
-	rule BOOL NOT NULL,
+	rule BOOLEAN NOT NULL,
 	adress varchar(255) NOT NULL
 );
 CREATE TABLE sneak_me.colors (

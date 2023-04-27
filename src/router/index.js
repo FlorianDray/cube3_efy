@@ -8,6 +8,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/HomeView.vue')
+    },
+    {
+      path: '/userForm',
+      name: 'userform',
+      component: () => import('../views/UserFormview.vue')
     }
   ]
 })
