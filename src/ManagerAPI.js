@@ -13,8 +13,7 @@ export default class ManagerAPI {
     if (params.length > 0) { //Ajout des paramètres dans l'url
       params.map(element => url += '&' + element.name + '=' + element.value);
     }
-    const response = await fetch(url, {
-    }); //Fetch sur le fichier index.php
+    const response = await fetch(url, {}); //Fetch sur le fichier index.php
     const data = await response.json(); // Réception de la réponse
     return data; //Renvoi de la réponse
   }

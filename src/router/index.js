@@ -13,6 +13,11 @@ const router = createRouter({
       path: '/userForm',
       name: 'userform',
       component: () => import('../views/UserFormview.vue')
+    },
+    {
+      path: '/userConnect',
+      name: 'userConnect',
+      component: () => import('../views/UserConnectView.vue')
     }
   ]
 })

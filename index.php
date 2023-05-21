@@ -118,16 +118,17 @@ function addUser(){
 
 function connectUser()
     {
+        $password = $_REQUEST['password'];
         $mail = $_REQUEST['mail'];
-        $query = "SELECT * FROM users WHERE email = $mail";
-        $user = json_decode(makeQuery($query)) ;
+        
+        $query = "SELECT * FROM users WHERE mail = '$mail';";
+        $user = makeQuery($query);
+        echo ($user);
         if (!$user) { // si y'a pas de data on retourne false
-            return false;
-        }
-        if (password_verify($this->pwd, $user['password'])) {// on utilise la fonction php password_verify pour checker le mdp côté form + bdd
-            return true;
+            echo  false;
+        } else if (password_verify($password, $user['password'])) {// on utilise la fonction php password_verify pour checker le mdp côté form + bdd
+            echo json_encode(true);
         } else {
-            return false;
+            echo false;
         }
-        // dans tous les cas on retourne true ou false pour la connexion
     }

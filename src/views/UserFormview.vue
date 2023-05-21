@@ -66,11 +66,15 @@ export default {
             name: 'adress',
             value: this.adress
           },
+          {
+            name: 'password',
+            value: this.password
+          }
         ]
-        await this.submitForm(params)
+        await this.submit(params)
       }
     },
-    async submitForm(params) {
+    async submit(params) {
       try {
         await this.manager.getAPI('addUser', params)
         this.validation = { success: true, message: 'Utilisateur ajouté avec succès' }
