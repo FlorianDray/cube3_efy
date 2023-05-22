@@ -1,8 +1,9 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Origin: http://localhost:8888");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Access-Control-Allow-Credentials: true");
+
 
 require './env.php';
 
@@ -44,11 +45,13 @@ function makeQuery($query){
 //Récupération de toutes les sneakers
 function getAllSneakers(){
     //Création de la requête
-    $select = 's.id AS id,  s.size AS size, s.price AS price, s.img_path AS img_path, c.name AS color, b.name AS brand';
-    $from = 'sneakers s';
-    $join = 'INNER JOIN brands b ON s.id_brand = b.id INNER JOIN colors c ON s.id_color = c.id';
-    $orderBY = 's.id DESC';
-    $query = "SELECT $select FROM $from $join ORDER BY $orderBY;";
+    // $select = 's.id AS id,  s.size AS size, s.price AS price, s.img_path AS img_path, c.name AS color, b.name AS brand';
+    $select = ' s.id_sneaker AS id, s.taille AS size, s.prix AS price ';
+    $from = ' sneakers s ';
+    // $join = 'INNER JOIN brands b ON s.id_brand = b.id INNER JOIN colors c ON s.id_color = c.id';
+    $orderBY = ' s.id DESC ';
+    $query = "SELECT $select FROM $from ORDER BY $orderBY;";
+    echo($query);
     echo  makeQuery($query); //Execution de la requête
 }
 
@@ -58,7 +61,7 @@ function getOneSneakers(){
     $id = $_REQUEST['id_sneakers'];
     $select = 's.id AS id,  s.size AS size, s.price AS price, s.img_path AS img_path, c.name AS color, b.name AS brand ';
     $from = ' sneakers s ';
-    $join = ' INNER JOIN brands b ON s.id_brand = b.id INNER JOIN colors c ON s.id_color = c.id ';
+    $join = ' INNER JOIN brands b ON s.id_brand = b.id AND INNER JOIN colors c ON s.id_color = c.id ';
     $where = " s.id = $id ";
     $query = "SELECT $select FROM $from $join WHERE $where;";
     echo  makeQuery($query);  //Execution de la requête

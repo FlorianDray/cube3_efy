@@ -12,7 +12,7 @@ import HeaderComponent from './components/HeaderComponent.vue'
     <RouterView />
   </main>
   <footer>
-    <FooterComponent /> 
+     <FooterComponent /> 
   </footer>
 </template>
 
