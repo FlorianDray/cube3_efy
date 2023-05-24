@@ -1,6 +1,6 @@
 export default class ManagerAPI {
 
-  baseURL = 'http://localhost:80/cube3_efy/index.php'
+  baseURL = 'http://localhost:8889/cube3_efy/index.php'
 
   /**
    * Appel API en méthode HTTP GET

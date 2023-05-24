@@ -1,16 +1,15 @@
 <script>
 
 // Importer les fonctions nécessaires 
-import { getTime, getCategories, getProducts, } from '../helpers/chatHelper';
-import ClickableKeyword from './ClickableKeyword.vue';
+import { getTime,  } from '../helpers/chatHelper';
+
 // Créer et exporter un composant Vue.js nommé ChatbotComponentv2 pour récupérer ses données.
 export default {
   name: 'ChatbotComponent',
   props: {
     msg: String
   },
-  components: { ClickableKeyword,
-  },
+
   // Initialiser les données de dialogue avec un message de bienvenue du bot
   data() {
     return {
