@@ -25,7 +25,8 @@ CREATE TABLE sneak_me.sneakers (
 	img_path VARCHAR(255) NOT NULL,
 	id_color INT NOT NULL,
 	id_brand INT NOT NULL,
-	CONSTRAINT fkSneakers_brands FOREIGN KEY (id_brand) REFERENCES brands(id)
+	CONSTRAINT fkSneakers_brands FOREIGN KEY (id_brand) REFERENCES brands(id),
+	CONSTRAINT fkSneakers_colors FOREIGN KEY (id_color) REFERENCES colors(id)
 );
 CREATE TABLE sneak_me.carts (
 	id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
