@@ -5,12 +5,12 @@ import HeaderComponent from './components/HeaderComponent.vue'
 </script>
 
 <template>
-  <header>
+  <!-- <header>
     <HeaderComponent />
   </header>
   <main>
     <RouterView />
-  </main>
+  </main> -->
   <footer>
      <FooterComponent /> 
   </footer>

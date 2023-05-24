@@ -45,13 +45,11 @@ function makeQuery($query){
 //Récupération de toutes les sneakers
 function getAllSneakers(){
     //Création de la requête
-    // $select = 's.id AS id,  s.size AS size, s.price AS price, s.img_path AS img_path, c.name AS color, b.name AS brand';
-    $select = ' s.id_sneaker AS id, s.taille AS size, s.prix AS price ';
+    $select = 's.id AS id,  s.size AS size, s.price AS price, s.img_path AS img_path, c.name AS color, b.name AS brand';
     $from = ' sneakers s ';
-    // $join = 'INNER JOIN brands b ON s.id_brand = b.id INNER JOIN colors c ON s.id_color = c.id';
+    $join = 'INNER JOIN brands b ON s.id_brand = b.id INNER JOIN colors c ON s.id_color = c.id';
     $orderBY = ' s.id DESC ';
-    $query = "SELECT $select FROM $from ORDER BY $orderBY;";
-    echo($query);
+    $query = "SELECT $select FROM $from $join ORDER BY $orderBY;";
     echo  makeQuery($query); //Execution de la requête
 }
 
@@ -114,6 +112,7 @@ function addUser(){
     $first_name = $_REQUEST['first_name'];
     $mail = $_REQUEST['mail'];
     $adress = $_REQUEST['adress'];
+    $password = $_REQUEST['password'];
     $table = 'users';
     $query = "INSERT INTO $table (last_name, first_name, mail, password, rule, adress) VALUES( '$last_name', '$first_name', '$mail','" . password_hash($password, PASSWORD_DEFAULT) . "', 0,  '$adress');";
     echo  makeQuery($query);  //Execution de la requête
